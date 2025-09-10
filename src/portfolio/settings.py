@@ -488,6 +488,8 @@ LANGUAGES_VOCID = 'languages'
 
 EN_LABELS_TITLE_CASE = env.bool('EN_LABELS_TITLE_CASE', default=True)
 
+BASEAUTH_API_URL = env.str('BASEAUTH_API_URL', default='')
+BASEAUTH_API_KEY = env.str('BASEAUTH_API_KEY', default='')
 ANGEWANDTE_API_KEY = env.str('ANGEWANDTE_API_KEY', default='')
 PRIMO_API_URL = env.str(
     'PRIMO_API_URL', default='https://apigw.obvsg.at/primo/v1/search'
