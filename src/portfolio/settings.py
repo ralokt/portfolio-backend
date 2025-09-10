@@ -512,6 +512,13 @@ SOURCES = {
         apiconfig.TIMEOUT: 10,
         apiconfig.HEADER: {'Authorization': f'Bearer {ANGEWANDTE_API_KEY}'},
     },
+    'BASEAUTH_USER': {
+        apiconfig.URL: f'{BASEAUTH_API_URL}/autocomplete',
+        apiconfig.QUERY_FIELD: 'q',
+        apiconfig.PAYLOAD: {'limit': 10, 'type': 'user'},
+        apiconfig.TIMEOUT: 10,
+        apiconfig.HEADER: {'X-Api-Key': BASEAUTH_API_KEY},
+    },
     'GND_PERSON': {
         apiconfig.URL: 'https://lobid.org/gnd/search',
         apiconfig.QUERY_FIELD: 'q',
