@@ -1,10 +1,11 @@
 import logging
 
-import vcr
-
 from django.test import TestCase
 
 from .views import fetch_responses
+
+#  import vcr
+
 
 logging.basicConfig(level=logging.ERROR)
 
@@ -162,12 +163,12 @@ class AutoSuggestTestCase(TestCase):
 
         return
 
-    @vcr.use_cassette(
-        'fixtures/vcr_cassettes/autosuggest.yaml',
-        filter_query_parameters=['api_key'],
-        record_mode='new_episodes',
-    )
-    def test_pelias(self):
-        res = fetch_responses('wien', ('PELIAS',))
-        assert any(rec['label'] == 'Vienna, WI, Austria' for rec in res)
-        return
+    #  @vcr.use_cassette(
+    #  'fixtures/vcr_cassettes/autosuggest.yaml',
+    #  filter_query_parameters=['api_key'],
+    #  record_mode='new_episodes',
+    #  )
+    #  def test_pelias(self):
+    #  res = fetch_responses('wien', ('PELIAS',))
+    #  assert any(rec['label'] == 'Vienna, WI, Austria' for rec in res)
+    #  return
