@@ -72,6 +72,24 @@ Default: `''`
 
 The API key for the base API of Angewandte.
 
+### `BASEAUTH_API_URL`
+
+URL of the baseauth API.
+
+```{note}
+This is NOT related to SSO; it's used for calling baseauth API endpoints from the backend (for example `autocomplete`).
+
+See the `CAS_*` settings to configure SSO.
+```
+
+### `BASEAUTH_API_KEY`
+
+API key used to communicate with baseauth.
+
+```{note}
+See note for `BASEAUTH_API_URL`.
+```
+
 ### `BEHIND_PROXY`
 
 Default: `True`

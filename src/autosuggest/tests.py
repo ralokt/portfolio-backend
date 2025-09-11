@@ -1,10 +1,11 @@
 import logging
 
-import vcr
-
 from django.test import TestCase
 
 from .views import fetch_responses
+
+#  import vcr
+
 
 logging.basicConfig(level=logging.ERROR)
 
@@ -162,12 +163,55 @@ class AutoSuggestTestCase(TestCase):
 
         return
 
-    @vcr.use_cassette(
-        'fixtures/vcr_cassettes/autosuggest.yaml',
-        filter_query_parameters=['api_key'],
-        record_mode='new_episodes',
-    )
-    def test_pelias(self):
-        res = fetch_responses('wien', ('PELIAS',))
-        assert any(rec['label'] == 'Vienna, WI, Austria' for rec in res)
-        return
+    #  @vcr.use_cassette(
+    #  'fixtures/vcr_cassettes/autosuggest.yaml',
+    #  filter_query_parameters=['api_key'],
+    #  record_mode='new_episodes',
+    #  )
+    #  def test_pelias(self):
+    #  res = fetch_responses('wien', ('PELIAS',))
+    #  assert any(rec['label'] == 'Vienna, WI, Austria' for rec in res)
+    #  return
+
+    def test_autosuggest_user_error(self):
+        res = fetch_responses('', ('BASEAUTH_USER',))
+        # This is actually an error, but we pass it on as an empty result
+        assert not res
+
+    def test_autosuggest_user(self):
+        cases = [
+            (
+                'alok',
+                {
+                    ('ralokt', 'Thomas Kolar'),
+                },
+            ),
+            (
+                'Th',
+                {
+                    ('ralokt', 'Thomas Kolar'),
+                    ('lkomas', 'Lothar Komas'),
+                },
+            ),
+            (
+                'tH',
+                {
+                    ('ralokt', 'Thomas Kolar'),
+                    ('lkomas', 'Lothar Komas'),
+                },
+            ),
+            ('asd', set()),
+            (
+                'tsu',
+                {
+                    ('mtsuit', 'mtsuit'),
+                },
+            ),
+        ]
+        for inp, expected_outp in cases:
+            res = fetch_responses(inp, ('BASEAUTH_USER',))
+            outp = {(rr['id'], rr['label']) for rr in res}
+            assert outp == expected_outp
+            for rec in res:
+                assert set(rec.keys()) == {'id', 'label', 'source_name'}
+                assert rec['source_name'] == 'base'

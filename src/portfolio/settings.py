@@ -488,6 +488,8 @@ LANGUAGES_VOCID = 'languages'
 
 EN_LABELS_TITLE_CASE = env.bool('EN_LABELS_TITLE_CASE', default=True)
 
+BASEAUTH_API_URL = env.str('BASEAUTH_API_URL', default='')
+BASEAUTH_API_KEY = env.str('BASEAUTH_API_KEY', default='')
 ANGEWANDTE_API_KEY = env.str('ANGEWANDTE_API_KEY', default='')
 PRIMO_API_URL = env.str(
     'PRIMO_API_URL', default='https://apigw.obvsg.at/primo/v1/search'
@@ -509,6 +511,13 @@ SOURCES = {
         apiconfig.PAYLOAD: None,
         apiconfig.TIMEOUT: 10,
         apiconfig.HEADER: {'Authorization': f'Bearer {ANGEWANDTE_API_KEY}'},
+    },
+    'BASEAUTH_USER': {
+        apiconfig.URL: f'{BASEAUTH_API_URL}/autocomplete',
+        apiconfig.QUERY_FIELD: 'q',
+        apiconfig.PAYLOAD: {'limit': 10, 'type': 'user'},
+        apiconfig.TIMEOUT: 10,
+        apiconfig.HEADER: {'X-Api-Key': BASEAUTH_API_KEY},
     },
     'GND_PERSON': {
         apiconfig.URL: 'https://lobid.org/gnd/search',
@@ -824,7 +833,13 @@ RESPONSE_MAPS = {
 }
 
 BIBRECS = ('PRIMO_IMPORT',)
-CONTRIBUTORS = ('GND_PERSON', 'GND_INSTITUTION', 'VIAF_PERSON', 'VIAF_INSTITUTION')
+CONTRIBUTORS = (
+    'GND_PERSON',
+    'GND_INSTITUTION',
+    'VIAF_PERSON',
+    'VIAF_INSTITUTION',
+    'BASEAUTH_USER',
+)
 
 if 'uni-ak.ac.at' in SITE_URL:
     CONTRIBUTORS = tuple(x for x in ['ANGEWANDTE_PERSON', *CONTRIBUTORS])
